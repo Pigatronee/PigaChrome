@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Electron Renderer & BrowserView Explained</title>
+<style>
+  body { font-family: Arial, sans-serif; line-height: 1.6; margin: 20px; }
+  h1, h2 { color: #333; }
+  pre { background: #f4f4f4; padding: 10px; border-radius: 5px; overflow-x: auto; }
+  code { color: #c7254e; background: #f9f2f4; padding: 2px 4px; border-radius: 3px; }
+  .note { background: #e7f3fe; padding: 10px; border-left: 4px solid #2196F3; margin: 10px 0; }
+</style>
+</head>
+<body>
+<h1>Electron Renderer Process & Dynamic BrowserView Resizing</h1>
+
+<h2>1. Renderer Process Basics</h2>
+<p>In Electron, there are two main contexts:</p>
+<ul>
+  <li><strong>Main process:</strong> Node.js environment, manages windows, system-level APIs, app lifecycle.</li>
+  <li><strong>Renderer process:</strong> Chromium environment, handles your HTML, CSS, and JS. It has access to <code>document</code>, the DOM, and the browser APIs.</li>
+</ul>
+
+<div class="note">
+<strong>Key Point:</strong> Any code that touches <code>document.getElementById()</code> or manipulates your HTML must run in the <em>renderer process</em>. Trying it in <code>main.js</code> will give <code>ReferenceError: document is not defined</code>.
+</div>
+
+<h2>2. Communicating Between Renderer & Main</h2>
+<p>The renderer cannot directly manipulate BrowserViews in the main process. To safely send messages:</p>
+<pre><code>// preload.js
+const { contextBridge, ipcRenderer } = require('electron');
+contextBridge.exposeInMainWorld('api', {
+    search: (query) =&gt; ipcRenderer.send('search', query)
+});
+</code></pre>
+<p>Then, in your renderer HTML:</p>
+<pre><code>
+window.api.search('cats'); // sends query to main process
+</code></pre>
+
+---
+
+<h2>3. Creating a BrowserWindow & BrowserView</h2>
+<pre><code>
+// main.js
+const { BrowserWindow, BrowserView } = require('electron');
+let win = new BrowserWindow({ width: 1000, height: 700 });
+let view = new BrowserView();
+win.setBrowserView(view);
+view.setBounds({ x:0, y:50, width:1000, height:650 }); // initial size below top bar
+view.webContents.loadURL('https://www.google.com');
+</code></pre>
+
+<p>The <code>BrowserView</code> is the “content area” where websites are rendered. The top bar (search bar) is in HTML and sits above it, usually 50px high.</p>
+
+---
+
+<h2>4. Making the BrowserView Resize Dynamically</h2>
+<p>If you just set fixed bounds, the view won’t resize when the window changes. To make it responsive:</p>
+<pre><code>
+win.on('resize', () =&gt; {
+    const bounds = win.getBounds();
+    view.setBounds({
+        x: 0,
+        y: 50,               // top bar height
+        width: bounds.width,
+        height: bounds.height - 50
+    });
+});
+</code></pre>
+
+<p>Explanation:</p>
+<ul>
+  <li><code>bounds.width</code> and <code>bounds.height</code> give the current window size.</li>
+  <li>The <code>BrowserView</code> always starts 50px below the top to leave space for your toolbar.</li>
+  <li>Height is <code>bounds.height - 50</code> so it fills all remaining space.</li>
+</ul>
+
+<div class="note">
+This is how a “mini-browser” layout works: fixed top bar, dynamic content area.
+</div>
+
+<h2>5. Summary</h2>
+<ul>
+  <li>Renderer process: handles your HTML &amp; JS, has <code>document</code>.</li>
+  <li>Main process: manages windows, BrowserViews, system APIs.</li>
+  <li>Preload scripts + <code>contextBridge</code> safely expose APIs to renderer.</li>
+  <li>BrowserView bounds must be set and updated on window resize for a responsive layout.</li>
+</ul>
+
+<p>With this structure, you can build a simple browser that: shows a search bar, loads results in a BrowserView, and resizes automatically.</p>
+
+</body>
+</html>
