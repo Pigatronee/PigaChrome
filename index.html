@@ -12,8 +12,34 @@
              O
         </button>
         <div class="search-bar">
-            <input type="text" placeholder="Search for something skibidi..">
+            <input id="search-box" type="text" placeholder="Search for something skibidi..">
         </div>
     </div>
+    <iframe id="results"></iframe>
+    <script>
+        const searchBox = document.getElementById("search-box")
+        const results = document.getElementById("results")
+
+        // Search logic
+        // if enter is pressed perform a search
+        window.addEventListener('keydown', (event) => {
+            if (event.key === "Enter"){
+                performSearch()
+            }
+        
+        });
+
+        function performSearch() {
+            console.log("searchbox value is: "+searchBox.value)
+            const query = searchBox.searchBox.value.trim()
+            if (!query) return;
+            const url = "https://www.google.com/search?q=" + encodeURIComponent(query)
+            results.src = url
+        }
+
+
+
+        searchBox.focus()
+    </script>
 </body>
 </html>
