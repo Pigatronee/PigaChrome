@@ -1,0 +1,13 @@
+
+.top-bar {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.search-bar input {
+    width: 600px;
+    height: 30px;
+    overflow: hidden;
+    background-color: #e9e9e9;
+}
