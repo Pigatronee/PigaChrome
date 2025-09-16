@@ -13,6 +13,8 @@ function createWindow() {
   win = new BrowserWindow({
     width: 1000,
     height: 700,
+    titleBarStyle: "hidden",
+    title: "PigaChrome",
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -40,8 +42,31 @@ createTab("https://duckduckgo.com/lite");
   });
 }
 
+function applyCustomStyle(view) {
+  if (!view) return;
+
+  const css = `
+    body {
+      background-color: #121212 !important;
+      color: #e0e0e0 !important;
+    }
+    a { color: #bb86fc !important; }
+    input, textarea {
+      background-color: #1e1e1e !important;
+      color: #e0e0e0 !important;
+      border: 1px solid #555 !important;
+    }
+    table { border-color: #444 !important; }
+  `;
+
+  view.webContents.insertCSS(css)
+    .then(() => console.log("Custom style applied"))
+    .catch(err => console.error("Failed to inject CSS:", err));
+}
+
+
 // ---------- Tabs ----------
-function createTab(url = "https://www.google.com") {
+function createTab(url = "https://duckduckgo.com/lite") {
     const newView = new BrowserView();
     win.setBrowserView(newView);
 
@@ -54,6 +79,14 @@ function createTab(url = "https://www.google.com") {
     });
 
     newView.webContents.loadURL(url);
+
+    newView.webContents.loadURL(url);
+
+    // Inject your theme when the page finishes loading
+    newView.webContents.on('did-finish-load', () => {
+    applyCustomStyle(newView);
+    });
+
 
     const tab = { id: Date.now(), view: newView, url, title: "New Tab"};
     tabs.push(tab);
@@ -142,7 +175,7 @@ ipcMain.on("search", (event, query) => {
 
 
 ipcMain.on("new-tab", () => {
-  createTab("https://www.google.com");
+  createTab("https://duckduckgo.com/lite");
 });
 
 ipcMain.on("switch-tab", (event, id) => {
