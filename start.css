@@ -1,0 +1,83 @@
+/* General reset */
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #121212;
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+  color: #fff;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400; /* normal */
+}
+
+/* Smooth animated gradient background */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Container */
+.container {
+  text-align: center;
+  padding: 40px;
+  background: rgba(18, 18, 18, 0.6); /* translucent dark panel */
+  border-radius: 20px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  max-width: 500px;
+  width: 90%;
+}
+
+/* Title */
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: #ffd6d6;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+  font-family: "Open Sans", sans-serif;
+  font-weight: 700; /* bold */
+}
+
+/* Subtitle */
+p {
+  font-size: 1.1rem;
+  margin-bottom: 25px;
+  color: #ffe4e4;
+}
+
+/* Search box */
+#search-box {
+  width: 80%;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  background: #2c2c2c;
+  color: #fff;
+}
+
+/* Search button */
+button {
+  padding: 12px 20px;
+  border: 2px solid #ffd6d6;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  background: #121212;
+  color: white;
+  font-weight: bold;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PigaChrome Startpage</title>
+    <link rel="stylesheet" href="start.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to PigaChrome</h1>
+        <p>The most skibidi sigma web browser in the (city maybe)</p>
+
+        <form id="search-form">
+            <input type="text" id="search-box" placeholder="Search with DuckDuckGo">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+    <script>
+        const form = document.getElementById("search-form");
+        const input = document.getElementById("search-box")
+
+        form.addEventListener("submit", (event) => {
+            event.preventDefault();
+            const query = input.value.trim();
+            if(!query) return;
+
+            // search
+            window.api.search(query);
+        })
+    </script>
+</body>
+</html>
