@@ -7,29 +7,41 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <div class="tab-bar" id="tab-bar"></div>
+
     <div class="top-bar">
-        <button id="toggle-sidebar-button">
-             O
+        <button id="toggle-sidebar-button" onclick="window.api.newTab()">
+             +
         </button>
         <div class="search-bar">
             <input id="search-box" type="text" placeholder="Search for something skibidi..">
         </div>
     </div>
     <script>
-        const searchBox = document.getElementById("search-box")
+  const tabBar = document.getElementById("tab-bar");
 
-        function performSearch() {
-            const query = searchBox.value.trim()
-            if (!query) return
-            window.api.search(query) // send search to main process
-        }
+  window.api.onUpdateTabs((tabs) => {
+    tabBar.innerHTML = ""; // clear
+    tabs.forEach(tab => {
+      const btn = document.createElement("button");
+      btn.textContent = tab.title || tab.url;
+      if (tab.isActive) btn.style.fontWeight = "bold";
 
-        window.addEventListener('keydown', (event) => {
-            if (event.key === "Enter") performSearch()
-        })
+      btn.onclick = () => window.api.switchTab(tab.id);
 
-        searchBox.focus()
+      // optional close button
+      const closeBtn = document.createElement("span");
+      closeBtn.textContent = " ×";
+      closeBtn.onclick = (e) => {
+        e.stopPropagation();
+        window.api.closeTab(tab.id);
+      };
 
-    </script>
+      btn.appendChild(closeBtn);
+      tabBar.appendChild(btn);
+    });
+  });
+</script>
 </body>
 </html>
