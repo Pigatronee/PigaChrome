@@ -7,15 +7,17 @@
     <link rel="stylesheet" href="start.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Welcome to PigaChrome</h1>
-        <p>The most skibidi sigma web browser in the (city maybe)</p>
-
-        <form id="search-form">
+    <div class="big-container">
+        <div class="container">
+            <h1>Welcome to PigaChrome</h1>
+            <p>The most skibidi sigma web browser in the (city maybe)</p>
+        </div>
+        <form id="search-form" class="search-form">
             <input type="text" id="search-box" placeholder="Search with DuckDuckGo">
             <button type="submit">Search</button>
         </form>
     </div>
+
     <script>
         const form = document.getElementById("search-form");
         const input = document.getElementById("search-box")

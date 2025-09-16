@@ -48,23 +48,53 @@ p {
   margin-bottom: 25px;
   color: #ffe4e4;
 }
+/* Big container to center everything vertically */
+.big-container {
+  display: flex;
+  flex-direction: column; /* stack text and form vertically */
+  align-items: center;    /* center horizontally */
+  justify-content: center; /* center vertically */
+  height: 100vh;
+  gap: 20px; /* space between text bubble and form */
+}
 
-/* Search box */
+/* Container (text bubble) */
+.container {
+  text-align: center;
+  padding: 40px;
+  background: rgba(18, 18, 18, 0.6); /* translucent dark panel */
+  border-radius: 20px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  max-width: 500px;
+  width: 90%;
+}
+
+/* Form with input and button side by side */
+.search-form {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* space between input and button */
+  width: 90%;
+  max-width: 500px;
+}
+
+/* Input styles (keep your nice style) */
 #search-box {
-  width: 80%;
+  flex: 1; /* grow to fill space */
+  min-width: 0;
   padding: 12px 16px;
   border: none;
   border-radius: 12px;
   font-size: 1rem;
   font-family: inherit;
   outline: none;
-  margin-bottom: 15px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   background: #2c2c2c;
   color: #fff;
 }
 
-/* Search button */
+/* Button styles (keep your nice style) */
 button {
   padding: 12px 20px;
   border: 2px solid #ffd6d6;
