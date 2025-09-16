@@ -1,47 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Electron Browser</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="tab-bar" id="tab-bar"></div>
+  <!-- Tab bar -->
+  <div class="tab-bar" id="tab-bar"></div>
 
-    <div class="top-bar">
-        <button id="toggle-sidebar-button" onclick="window.api.newTab()">
-             +
-        </button>
-        <div class="search-bar">
-            <input id="search-box" type="text" placeholder="Search for something skibidi..">
-        </div>
+  <!-- Toolbar -->
+  <div class="top-bar">
+    <button id="new-tab-button" onclick="window.api.newTab()">+</button>
+    <div class="search-bar">
+      <input id="search-box" type="text" placeholder="Search or enter URL...">
     </div>
-    <script>
-  const tabBar = document.getElementById("tab-bar");
+  </div>
 
-  window.api.onUpdateTabs((tabs) => {
-    tabBar.innerHTML = ""; // clear
-    tabs.forEach(tab => {
-      const btn = document.createElement("button");
-      btn.textContent = tab.title || tab.url;
-      if (tab.isActive) btn.style.fontWeight = "bold";
+  <script>
+    const tabBar = document.getElementById("tab-bar");
+    const searchBox = document.getElementById("search-box");
 
-      btn.onclick = () => window.api.switchTab(tab.id);
+    // Update tab list when main sends it
+    window.api.onUpdateTabs((tabs) => {
+      tabBar.innerHTML = ""; // clear
+      tabs.forEach(tab => {
+        const btn = document.createElement("button");
+        btn.textContent = tab.title || tab.url;
+        if (tab.isActive) btn.setAttribute("active", "");
 
-      // optional close button
-      const closeBtn = document.createElement("span");
-      closeBtn.textContent = " ×";
-      closeBtn.onclick = (e) => {
-        e.stopPropagation();
-        window.api.closeTab(tab.id);
-      };
+        btn.onclick = () => window.api.switchTab(tab.id);
 
-      btn.appendChild(closeBtn);
-      tabBar.appendChild(btn);
+        // close button
+        const closeBtn = document.createElement("span");
+        closeBtn.textContent = " ×";
+        closeBtn.onclick = (e) => {
+          e.stopPropagation();
+          window.api.closeTab(tab.id);
+        };
+
+        btn.appendChild(closeBtn);
+        tabBar.appendChild(btn);
+      });
     });
-  });
-</script>
+
+    // Search box: enter triggers search
+    function performSearch() {
+      const query = searchBox.value.trim();
+      if (!query) return;
+      window.api.search(query);
+    }
+
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") performSearch();
+    });
+
+    searchBox.focus();
+  </script>
 </body>
 </html>

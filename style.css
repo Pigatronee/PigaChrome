@@ -1,13 +1,51 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
+
+.tab-bar {
+  display: flex;
+  background: #ddd;
+  padding: 4px;
+  overflow-x: auto;
+}
+
+.tab-bar button {
+  margin-right: 4px;
+  padding: 6px 12px;
+  border: none;
+  background: #eee;
+  border-radius: 6px 6px 0 0;
+  cursor: pointer;
+}
+
+.tab-bar button[active] {
+  background: #fff;
+  font-weight: bold;
+  box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+}
+
+.tab-bar span {
+  margin-left: 6px;
+  cursor: pointer;
+}
 
 .top-bar {
-    display: flex;
-    gap: 10px;
-    align-items: center;
+  display: flex;
+  align-items: center;
+  background: #f0f0f0;
+  padding: 6px;
+  border-top: 1px solid #ccc;
+}
+
+.search-bar {
+  flex: 1;
+  margin-left: 8px;
 }
 
 .search-bar input {
-    width: 600px;
-    height: 30px;
-    overflow: hidden;
-    background-color: #e9e9e9;
+  width: 100%;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
