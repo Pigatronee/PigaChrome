@@ -36,11 +36,19 @@ body {
   background: #f0f0f0;
   padding: 6px;
   border-top: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+#new-tab-button {
+  flex-shrink: 0; /* prevents button from shrinking */
+  margin-right: 8px;
+  padding: 6px 12px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .search-bar {
   flex: 1;
-  margin-left: 8px;
 }
 
 .search-bar input {
@@ -48,4 +56,5 @@ body {
   padding: 6px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  box-sizing: border-box;
 }

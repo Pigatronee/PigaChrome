@@ -22,10 +22,9 @@ function createWindow() {
   });
 
   win.loadFile("index.html");
-  win.webContents.openDevTools();
 
   // First tab
-  createTab("https://www.google.com");
+createTab("https://duckduckgo.com/lite");
 
   // Resize handler
   win.on("resize", () => {
@@ -42,31 +41,25 @@ function createWindow() {
 }
 
 // ---------- Tabs ----------
-function createTab(url = "https://google.com") {
-  const newView = new BrowserView();
-  win.setBrowserView(newView);
+function createTab(url = "https://www.google.com") {
+    const newView = new BrowserView();
+    win.setBrowserView(newView);
 
-  const bounds = win.getBounds();
-  newView.setBounds({
-    x: 0,
-    y: HEADER_HEIGHT,
-    width: bounds.width,
-    height: bounds.height - HEADER_HEIGHT
-  });
+    const bounds = win.getBounds();
+    newView.setBounds({
+        x: 0,
+        y: TOOLBAR_HEIGHT,
+        width: bounds.width,
+        height: bounds.height - TOOLBAR_HEIGHT
+    });
 
-  newView.webContents.loadURL(url);
+    newView.webContents.loadURL(url);
 
-  const tab = { id: Date.now(), view: newView, url, title: "New Tab" };
-  tabs.push(tab);
-
-  // update title dynamically
-  newView.webContents.on("page-title-updated", (event, title) => {
-    tab.title = title;
-    sendTabsUpdate();
-  });
-
-  switchTab(tab.id);
+    const tab = { id: Date.now(), view: newView, url, title: "New Tab"};
+    tabs.push(tab);
+    switchTab(tab.id);
 }
+
 
 function switchTab(id) {
   const tab = tabs.find(t => t.id === id);
@@ -97,21 +90,27 @@ function closeTab(id) {
   const tab = tabs[idx];
   win.removeBrowserView(tab.view);
 
-  // ✅ Proper cleanup
+  // Proper cleanup
   if (!tab.view.webContents.isDestroyed()) {
     tab.view.webContents.destroy();
   }
 
   tabs.splice(idx, 1);
 
-  if (tabs.length > 0) {
+  if (tabs.length === 0) {
+    // No tabs left → quit app
+    app.quit();
+    return;
+  }
+
+  // If we closed the current tab, switch to the first remaining tab
+  if (currentTab.id === id) {
     switchTab(tabs[0].id);
-  } else {
-    currentTab = null;
   }
 
   sendTabsUpdate();
 }
+
 
 
 function sendTabsUpdate() {
@@ -124,14 +123,23 @@ function sendTabsUpdate() {
   })));
 }
 
+// darkmiode
+
+
 // ---------- IPC ----------
 ipcMain.on("search", (event, query) => {
-  if (!query || !currentTab) return;
-  const url = query.startsWith("http") ? query : 
-    "https://www.google.com/search?q=" + encodeURIComponent(query);
-  currentTab.view.webContents.loadURL(url);
-  currentTab.url = url;
+    if (!currentTab) return;
+
+    const url = query.startsWith("http")
+        ? query
+        : "https://duckduckgo.com/?q=" + encodeURIComponent(query);
+
+    currentTab.view.webContents.loadURL(url);
+    currentTab.url = url;
 });
+
+
+
 
 ipcMain.on("new-tab", () => {
   createTab("https://www.google.com");
