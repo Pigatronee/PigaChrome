@@ -37,12 +37,9 @@ searchButton.addEventListener("click", (e) => {
 });
 
 // Pressing Enter inside input
-searchBox.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    e.preventDefault(); // prevent form submit / default
-    performSearch();
-  }
-});
+searchBox.addEventListener("keydown", (event) => {
+      if (event.key === "Enter") performSearch();
+    });
 </script>
 </body>
 </html>
