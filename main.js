@@ -49,7 +49,15 @@ function createWindow() {
 
 // ---------- Tabs ----------
 function createTab(url) {
-    const newView = new BrowserView();
+    const newView = new BrowserView({
+  webPreferences: {
+    preload: __dirname + "/preload.js",
+    contextIsolation: true,
+    nodeIntegration: false,
+    sandbox: true
+  }
+});
+
     win.setBrowserView(newView);
 
     const bounds = win.getBounds();

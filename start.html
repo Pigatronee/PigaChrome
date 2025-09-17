@@ -14,32 +14,33 @@
         </div>
         <form id="search-form" class="search-form">
             <input type="text" id="search-box" placeholder="Search with DuckDuckGo">
-            <button type="submit">Search</button>
+            <button type="submit" id="search-button">Search</button>
         </form>
     </div>
 
 <script>
-const searchBox = document.getElementById("search-box");
-const searchButton = document.getElementById("search-button");
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("POopoo shit shit")
+  const searchBox = document.getElementById("search-box");
+  const searchButton = document.getElementById("search-button");
 
-// Centralized search function
-function performSearch() {
-  const query = searchBox.value.trim();
-  if (!query) return;
-  console.log("Performing search:", query); // debug
-  window.api.search(query);
-}
+  function performSearch() {
+    const query = searchBox.value.trim();
+    if (!query) return;
+    console.log("Performing search:", query);
+    window.api.search(query);
+  }
 
-// Search button click
-searchButton.addEventListener("click", (e) => {
-  e.preventDefault();
-  performSearch();
+  searchButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    performSearch();
+  });
+
+  searchBox.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") performSearch();
+  });
 });
 
-// Pressing Enter inside input
-searchBox.addEventListener("keydown", (event) => {
-      if (event.key === "Enter") performSearch();
-    });
 </script>
 </body>
 </html>
