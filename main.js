@@ -25,8 +25,11 @@ function createWindow() {
 
   win.loadFile("index.html");
 
+  // Open DevTools in a separate window
+  win.webContents.openDevTools({ mode: 'detach' });
+
   // First tab
-createTab();
+  createTab();
 
   // Resize handler
   win.on("resize", () => {
@@ -41,6 +44,7 @@ createTab();
     }
   });
 }
+
 
 
 // ---------- Tabs ----------
@@ -65,6 +69,8 @@ function createTab(url) {
     const tab = { id: Date.now(), view: newView, url: url || "start-page", title: "New Tab" };
     tabs.push(tab);
     switchTab(tab.id);
+
+   // win.webContents.openDevTools();
 }
 
 
@@ -136,6 +142,7 @@ function sendTabsUpdate() {
 
 // ---------- IPC ----------
 ipcMain.on("search", (event, query) => {
+   console.log("Got search:", query); // <-- is this printed?
     if (!currentTab) return;
 
     const url = query.startsWith("http")

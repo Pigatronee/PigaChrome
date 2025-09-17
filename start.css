@@ -53,7 +53,8 @@ p {
   display: flex;
   flex-direction: column; /* stack text and form vertically */
   align-items: center;    /* center horizontally */
-  justify-content: center; /* center vertically */
+  justify-content: flex-start; /* center vertically */
+  padding-top: 50px;
   height: 100vh;
   gap: 20px; /* space between text bubble and form */
 }

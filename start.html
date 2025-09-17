@@ -18,18 +18,31 @@
         </form>
     </div>
 
-    <script>
-        const form = document.getElementById("search-form");
-        const input = document.getElementById("search-box")
+<script>
+const searchBox = document.getElementById("search-box");
+const searchButton = document.getElementById("search-button");
 
-        form.addEventListener("submit", (event) => {
-            event.preventDefault();
-            const query = input.value.trim();
-            if(!query) return;
+// Centralized search function
+function performSearch() {
+  const query = searchBox.value.trim();
+  if (!query) return;
+  console.log("Performing search:", query); // debug
+  window.api.search(query);
+}
 
-            // search
-            window.api.search(query);
-        })
-    </script>
+// Search button click
+searchButton.addEventListener("click", (e) => {
+  e.preventDefault();
+  performSearch();
+});
+
+// Pressing Enter inside input
+searchBox.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault(); // prevent form submit / default
+    performSearch();
+  }
+});
+</script>
 </body>
 </html>
