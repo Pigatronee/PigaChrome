@@ -1,17 +1,26 @@
 /* General reset */
+
+* {
+  box-sizing: border-box;
+}
+
+
 body {
   margin: 0;
-  height: 100vh;
+  min-height: 100vh;           /* allow content to grow without scroll */
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: center;      /* horizontal centering */
+  align-items: flex-start;      /* start at top instead of centering vertically */
   background: #121212;
   background-size: 400% 400%;
   animation: gradientShift 15s ease infinite;
   color: #fff;
   font-family: "Open Sans", sans-serif;
-  font-weight: 400; /* normal */
+  font-weight: 400;
+  overflow-y: hidden;           /* optional: hide any vertical scrollbar */
 }
+
+
 
 /* Smooth animated gradient background */
 @keyframes gradientShift {
@@ -50,14 +59,16 @@ p {
 }
 /* Big container to center everything vertically */
 .big-container {
-  display: flex;
-  flex-direction: column; /* stack text and form vertically */
-  align-items: center;    /* center horizontally */
-  justify-content: flex-start; /* center vertically */
+  min-height: 100vh;           /* allows content to grow without forcing scroll */
   padding-top: 50px;
-  height: 100vh;
-  gap: 20px; /* space between text bubble and form */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* keep content near top */
+  gap: 20px;
 }
+
+
 
 /* Container (text bubble) */
 .container {
