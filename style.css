@@ -10,6 +10,8 @@ body {
   background: #1f1f1f; /* dark background */
   padding: 4px;
   overflow-x: auto;
+
+  -webkit-app-region: drag;
 }
 
 .tab-bar button {
@@ -20,6 +22,8 @@ body {
   border-radius: 6px 6px 0 0;
   color: #e0e0e0;
   cursor: pointer;
+
+  -webkit-app-region: no-drag;
 }
 
 .tab-bar button[active] {
