@@ -49,36 +49,59 @@ function createWindow() {
 
 // ---------- Tabs ----------
 function createTab(url) {
-    const newView = new BrowserView({
-  webPreferences: {
-    preload: __dirname + "/preload.js",
-    contextIsolation: true,
-    nodeIntegration: false,
-    sandbox: true
-  }
-});
-
-    win.setBrowserView(newView);
-
-    const bounds = win.getBounds();
-    newView.setBounds({
-        x: 0,
-        y: HEADER_HEIGHT,
-        width: bounds.width,
-        height: bounds.height - TOOLBAR_HEIGHT
-    });
-
-    if (url) {
-        newView.webContents.loadURL(url);
-    } else {
-        newView.webContents.loadFile("start.html"); // <- load your start page
+  const newView = new BrowserView({
+    webPreferences: {
+      preload: __dirname + "/preload.js",
+      contextIsolation: true,
+      nodeIntegration: false,
+      sandbox: true
     }
+  });
 
-    const tab = { id: Date.now(), view: newView, url: url || "start-page", title: "New Tab" };
-    tabs.push(tab);
-    switchTab(tab.id);
+  win.setBrowserView(newView);
 
-   // win.webContents.openDevTools();
+  const bounds = win.getBounds();
+  newView.setBounds({
+    x: 0,
+    y: HEADER_HEIGHT,
+    width: bounds.width,
+    height: bounds.height - TOOLBAR_HEIGHT
+  });
+
+  if (url) {
+    newView.webContents.loadURL(url);
+  } else {
+    newView.webContents.loadFile("start.html");
+  }
+
+  const tab = { id: Date.now(), view: newView, url: url || "start-page", title: "New Tab", favicon: null };
+  tabs.push(tab);
+  switchTab(tab.id);
+
+  // --- Listen for title updates ---
+  newView.webContents.on("page-title-updated", (event, title) => {
+    tab.title = title;
+    updateRendererTabs(); // send updated tabs to your renderer
+  });
+
+  // --- Listen for favicon updates ---
+  newView.webContents.on("page-favicon-updated", (event, favicons) => {
+    if (favicons && favicons.length > 0) {
+      tab.favicon = favicons[0];
+      updateRendererTabs(); // send updated tabs to your renderer
+    }
+  });
+}
+
+function updateRendererTabs() {
+  if (!win) return;
+  win.webContents.send("update-tabs", tabs.map(t => ({
+    id: t.id,
+    url: t.url,
+    title: t.title,
+    favicon: t.favicon,
+    isActive: t.id === currentTab?.id
+  })));
 }
 
 
@@ -102,7 +125,7 @@ function switchTab(id) {
   });
 
   currentTab = tab;
-  sendTabsUpdate();
+  updateRendererTabs()
 }
 
 function closeTab(id) {
@@ -130,23 +153,8 @@ function closeTab(id) {
     switchTab(tabs[0].id);
   }
 
-  sendTabsUpdate();
+  updateRendererTabs();
 }
-
-
-
-function sendTabsUpdate() {
-  if (!win) return;
-  win.webContents.send("update-tabs", tabs.map(t => ({
-    id: t.id,
-    title: t.title,
-    url: t.url,
-    isActive: t.id === currentTab?.id
-  })));
-}
-
-// darkmiode
-
 
 // ---------- IPC ----------
 ipcMain.on("search", (event, query) => {

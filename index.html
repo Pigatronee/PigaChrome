@@ -29,26 +29,41 @@
 
     // Update tab list when main sends it
     window.api.onUpdateTabs((tabs) => {
-      tabBar.innerHTML = ""; // clear
-      tabs.forEach(tab => {
-        const btn = document.createElement("button");
-        btn.textContent = tab.title || tab.url;
-        if (tab.isActive) btn.setAttribute("active", "");
+  tabBar.innerHTML = ""; // clear
+  tabs.forEach(tab => {
+    const btn = document.createElement("button");
+    if (tab.isActive) btn.setAttribute("active", "");
 
-        btn.onclick = () => window.api.switchTab(tab.id);
+    // favicon
+    const icon = document.createElement("img");
+    icon.src = tab.favicon || "default-icon.png"; // fallback if no favicon
+    icon.alt = "";
+    icon.width = 16;
+    icon.height = 16;
+    icon.style.marginRight = "6px";
 
-        // close button
-        const closeBtn = document.createElement("span");
-        closeBtn.textContent = " ×";
-        closeBtn.onclick = (e) => {
-          e.stopPropagation();
-          window.api.closeTab(tab.id);
-        };
+    // title text
+    const titleSpan = document.createElement("span");
+    titleSpan.textContent = tab.title || tab.url;
 
-        btn.appendChild(closeBtn);
-        tabBar.appendChild(btn);
-      });
-    });
+    // close button
+    const closeBtn = document.createElement("span");
+    closeBtn.textContent = " ×";
+    closeBtn.onclick = (e) => {
+      e.stopPropagation();
+      window.api.closeTab(tab.id);
+    };
+
+    // assemble
+    btn.onclick = () => window.api.switchTab(tab.id);
+    btn.appendChild(icon);
+    btn.appendChild(titleSpan);
+    btn.appendChild(closeBtn);
+
+    tabBar.appendChild(btn);
+  });
+});
+
 
     // Search box: enter triggers search
     function performSearch() {
@@ -60,6 +75,38 @@
     window.addEventListener("keydown", (event) => {
       if (event.key === "Enter") performSearch();
     });
+
+    // make tabs display correct text and favicon
+    async function getPageTitle(url) {
+      const res = await fetch(url);
+      const text = await res.text();
+      const match = text.match(/<title>(.*?)<\/title>/i);
+      return match ? match[1] : url;
+    }
+
+    async function getFavicon(url) {
+  const baseUrl = new URL(url).origin;
+  const res = await fetch(url);
+  const text = await res.text();
+
+  // Try to find favicon in HTML
+  const match = text.match(/<link[^>]+rel=["'](?:shortcut icon|icon)["'][^>]*>/i);
+  if (match) {
+    const hrefMatch = match[0].match(/href=["']([^"']+)["']/i);
+    if (hrefMatch) {
+      let faviconUrl = hrefMatch[1];
+      // Handle relative paths
+      if (!faviconUrl.startsWith("http")) {
+        faviconUrl = new URL(faviconUrl, baseUrl).href;
+      }
+      return faviconUrl;
+    }
+  }
+
+    // Fallback to /favicon.ico
+    return `${baseUrl}/favicon.ico`;
+  }
+
 
     searchBox.focus();
   </script>
