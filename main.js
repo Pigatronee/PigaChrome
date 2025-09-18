@@ -14,7 +14,7 @@ function createWindow() {
     width: 1000,
     height: 700,
     titleBarStyle: "hidden",
-    title: "PigaChrome",
+    title: "SearchAtronee",
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -74,7 +74,7 @@ function createTab(url) {
     newView.webContents.loadFile("start.html");
   }
 
-  const tab = { id: Date.now(), view: newView, url: url || "start-page", title: "New Tab", favicon: null };
+  const tab = { id: Date.now(), view: newView, url: url || "about:blank", title: "New Tab", favicon: "Icons/pig-icon.png" };
   tabs.push(tab);
   switchTab(tab.id);
 
