@@ -63,7 +63,7 @@ function createTab(url) {
     const bounds = win.getBounds();
     newView.setBounds({
         x: 0,
-        y: TOOLBAR_HEIGHT,
+        y: HEADER_HEIGHT,
         width: bounds.width,
         height: bounds.height - TOOLBAR_HEIGHT
     });

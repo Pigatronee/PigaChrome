@@ -1,7 +1,6 @@
 {
   "name": "pigachrome",
   "version": "1.0.0",
-  "description": "",
   "homepage": "https://github.com/Pigatronee/PigaChrome#readme",
   "bugs": {
     "url": "https://github.com/Pigatronee/PigaChrome/issues"
@@ -79,6 +78,7 @@
     "yauzl": "^2.10.0"
   },
   "devDependencies": {
-    "electron": "^38.1.0"
-  }
+    "electron": "^38.1.2"
+  },
+  "description": ""
 }
