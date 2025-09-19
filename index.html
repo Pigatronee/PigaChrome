@@ -12,8 +12,16 @@
 <body>
 
   <!-- Tab bar -->
-  <div class="tab-bar" id="tab-bar"></div>
+  <div class="tab-bar" id="tab-bar">
+  <div class="tabs" id="tabs-container"></div>
+  <div class="navigation-buttons">
+    <button id="minimise-button">-</button>
+    <button id="expand-button">o</button>
+    <button id="exit-button">x</button>
+  </div>
+</div>
 
+  
   <!-- Toolbar -->
   <div class="top-bar">
     
@@ -21,32 +29,30 @@
     <div class="search-bar">
       <input id="search-box" type="text" placeholder="Search for something skibidi...">
     </div>
+    
   </div>
 
   <script>
     const tabBar = document.getElementById("tab-bar");
     const searchBox = document.getElementById("search-box");
+    const tabsContainer = document.getElementById("tabs-container");
 
     // Update tab list when main sends it
     window.api.onUpdateTabs((tabs) => {
-  tabBar.innerHTML = ""; // clear
+  tabsContainer.innerHTML = ""; // clear previous tabs
   tabs.forEach(tab => {
     const btn = document.createElement("button");
     if (tab.isActive) btn.setAttribute("active", "");
-
-    // favicon
+    
     const icon = document.createElement("img");
-    icon.src = tab.favicon || "default-icon.png"; // fallback if no favicon
-    icon.alt = "";
+    icon.src = tab.favicon || "default-icon.png";
     icon.width = 16;
     icon.height = 16;
     icon.style.marginRight = "6px";
 
-    // title text
     const titleSpan = document.createElement("span");
     titleSpan.textContent = tab.title || tab.url;
 
-    // close button
     const closeBtn = document.createElement("span");
     closeBtn.textContent = " ×";
     closeBtn.onclick = (e) => {
@@ -54,13 +60,12 @@
       window.api.closeTab(tab.id);
     };
 
-    // assemble
     btn.onclick = () => window.api.switchTab(tab.id);
     btn.appendChild(icon);
     btn.appendChild(titleSpan);
     btn.appendChild(closeBtn);
 
-    tabBar.appendChild(btn);
+    tabsContainer.appendChild(btn);
   });
 });
 
@@ -107,6 +112,18 @@
     return `${baseUrl}/favicon.ico`;
   }
 
+  // add navigation button functionality
+  document.getElementById("minimise-button").addEventListener("click", () => {
+  window.windowControls.minimize();
+});
+
+document.getElementById("expand-button").addEventListener("click", () => {
+  window.windowControls.maximize();
+});
+
+document.getElementById("exit-button").addEventListener("click", () => {
+  window.windowControls.close();
+});
 
     searchBox.focus();
   </script>

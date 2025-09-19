@@ -7,12 +7,24 @@ body {
 
 .tab-bar {
   display: flex;
-  background: #1f1f1f; /* dark background */
+  align-items: center;
+  background: #1f1f1f;
   padding: 4px;
   overflow-x: auto;
-
   -webkit-app-region: drag;
 }
+
+.tabs {
+  display: flex;
+  flex: 1; /* take all space to push navigation buttons to right */
+}
+
+.navigation-buttons {
+  display: flex; /* keep buttons in a row */
+  gap: 5px;
+}
+
+
 
 .tab-bar button {
   margin-right: 4px;

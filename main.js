@@ -190,3 +190,21 @@ app.whenReady().then(createWindow);
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") app.quit();
 });
+
+ipcMain.on("window-minimize", () => {
+  if (win) win.minimize();
+});
+
+ipcMain.on("window-maximize", () => {
+  if (win) {
+    if (win.isMaximized()) {
+      win.unmaximize();
+    } else {
+      win.maximize();
+    }
+  }
+});
+
+ipcMain.on("window-close", () => {
+  if (win) win.close();
+});

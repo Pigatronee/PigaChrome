@@ -7,3 +7,9 @@ contextBridge.exposeInMainWorld("api", {
   closeTab: (id) => ipcRenderer.send("close-tab", id),
   onUpdateTabs: (callback) => ipcRenderer.on("update-tabs", (event, tabs) => callback(tabs))
 });
+
+contextBridge.exposeInMainWorld("windowControls", {
+  minimize: () => ipcRenderer.send("window-minimize"),
+  maximize: () => ipcRenderer.send("window-maximize"),
+  close: () => ipcRenderer.send("window-close"),
+});
