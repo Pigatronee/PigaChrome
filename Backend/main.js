@@ -27,10 +27,12 @@ function createWindow() {
   win.loadFile(path.join(__dirname, "..", "frontend", "index.html"));
 
   // Open DevTools in a separate window
-  win.webContents.openDevTools({ mode: 'detach' });
+  win.webContents.openDevTools({ mode: "detach" });
 
-  // First tab
-  createTab();
+  // Only create the first tab once the window is ready
+  win.once("ready-to-show", () => {
+    createTab();
+  });
 
   // Resize handler
   win.on("resize", () => {
@@ -45,6 +47,7 @@ function createWindow() {
     }
   });
 }
+
 
 
 
@@ -72,12 +75,14 @@ function createTab(url) {
   if (url) {
     newView.webContents.loadURL(url);
   } else {
-    newView.webContents.loadFile(path.join(__dirname, "..", "FrontEnd", "start.html"));
+    newView.webContents.loadFile(path.join(__dirname, "..", "frontend", "start.html"));
   }
 
   const tab = { id: Date.now(), view: newView, url: url || "about:blank", title: "New Tab", favicon: "Icons/pig-icon.png" };
   tabs.push(tab);
   switchTab(tab.id);
+
+  updateRendererTabs();
 
   // --- Listen for title updates ---
   newView.webContents.on("page-title-updated", (event, title) => {
@@ -179,6 +184,7 @@ ipcMain.on("new-tab", () => {
 
 ipcMain.on("switch-tab", (event, id) => {
   switchTab(id);
+  updateRendererTabs();
 });
 
 ipcMain.on("close-tab", (event, id) => {
