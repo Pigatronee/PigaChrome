@@ -1,5 +1,11 @@
 body {
   background-color: black;
+  background-image: url("Backgrounds/lerone-pieters-j57b5V7_RJw-unsplash.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+
+
   color: rgb(233, 178, 224);
   font-family: "Fira Sans", sans-serif;
 }
