@@ -4,15 +4,25 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center;
-
+  background-size: cover;
 
   color: rgb(233, 178, 224);
   font-family: "Fira Sans", sans-serif;
+
+  /*Center everything*/
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  text-align: center;
 }
 
 h1{
   font-weight: bold;
   font-size: 80px;
+  width: 600px;
+  padding: 10px;
 
   /*border*/
   border-style: solid;
