@@ -1,4 +1,5 @@
 const { app, BrowserWindow, BrowserView, ipcMain } = require("electron");
+const path = require("path")
 
 let win;
 let tabs = [];
@@ -23,7 +24,7 @@ function createWindow() {
     }
   });
 
-  win.loadFile("index.html");
+  win.loadFile(path.join(__dirname, "..", "frontend", "index.html"));
 
   // Open DevTools in a separate window
   win.webContents.openDevTools({ mode: 'detach' });
@@ -71,7 +72,7 @@ function createTab(url) {
   if (url) {
     newView.webContents.loadURL(url);
   } else {
-    newView.webContents.loadFile("start.html");
+    newView.webContents.loadFile(path.join(__dirname, "..", "FrontEnd", "start.html"));
   }
 
   const tab = { id: Date.now(), view: newView, url: url || "about:blank", title: "New Tab", favicon: "Icons/pig-icon.png" };
