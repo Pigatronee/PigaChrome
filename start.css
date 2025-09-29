@@ -1,125 +1,20 @@
-/* General reset */
-
-* {
-  box-sizing: border-box;
-}
-
-
 body {
-  margin: 0;
-  min-height: 100vh;           /* allow content to grow without scroll */
-  display: flex;
-  justify-content: center;      /* horizontal centering */
-  align-items: flex-start;      /* start at top instead of centering vertically */
-  background: #121212;
-  background-size: 400% 400%;
-  animation: gradientShift 15s ease infinite;
-  color: #fff;
-  font-family: "Open Sans", sans-serif;
-  font-weight: 400;
-  overflow-y: hidden;           /* optional: hide any vertical scrollbar */
+  background-color: black;
+  color: rgb(233, 178, 224);
+  font-family: "Fira Sans", sans-serif;
 }
 
-
-
-/* Smooth animated gradient background */
-@keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* Container */
-.container {
-  text-align: center;
-  padding: 40px;
-  background: rgba(18, 18, 18, 0.6); /* translucent dark panel */
-  border-radius: 20px;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-  max-width: 500px;
-  width: 90%;
-}
-
-/* Title */
-h1 {
-  font-size: 2.5rem;
-  margin-bottom: 10px;
-  color: #ffd6d6;
-  text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
-  font-family: "Open Sans", sans-serif;
-  font-weight: 700; /* bold */
-}
-
-/* Subtitle */
-p {
-  font-size: 1.1rem;
-  margin-bottom: 25px;
-  color: #ffe4e4;
-}
-/* Big container to center everything vertically */
-.big-container {
-  min-height: 100vh;           /* allows content to grow without forcing scroll */
-  padding-top: 50px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start; /* keep content near top */
-  gap: 20px;
-}
-
-
-
-/* Container (text bubble) */
-.container {
-  text-align: center;
-  padding: 40px;
-  background: rgba(18, 18, 18, 0.6); /* translucent dark panel */
-  border-radius: 20px;
-  backdrop-filter: blur(12px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-  max-width: 500px;
-  width: 90%;
-}
-
-/* Form with input and button side by side */
-.search-form {
-  display: flex;
-  justify-content: center;
-  gap: 10px; /* space between input and button */
-  width: 90%;
-  max-width: 500px;
-}
-
-/* Input styles (keep your nice style) */
-#search-box {
-  flex: 1; /* grow to fill space */
-  min-width: 0;
-  padding: 12px 16px;
-  border: none;
-  border-radius: 12px;
-  font-size: 1rem;
-  font-family: inherit;
-  outline: none;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  background: #2c2c2c;
-  color: #fff;
-}
-
-/* Button styles (keep your nice style) */
-button {
-  padding: 12px 20px;
-  border: 2px solid #ffd6d6;
-  border-radius: 12px;
-  font-size: 1rem;
-  cursor: pointer;
-  background: #121212;
-  color: white;
+h1{
   font-weight: bold;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  font-size: 80px;
+
+  /*border*/
+  border-style: solid;
+  border-width: 5px;
+  border-radius: 15px;
+  padding: 5px;
 }
 
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+p{
+  font-size: 20px;
 }
