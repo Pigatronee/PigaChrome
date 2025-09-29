@@ -26,10 +26,15 @@ body {
   border-radius: 15px;
   border-color: rgba(0, 0, 0, 0);
   background-color: rgba(0, 0, 0, 0.904);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* smooth easing */
 
   padding: 5px;
   margin: auto;
   margin-bottom: 15px;
+}
+
+.container:hover {
+  transform: translateY(-2px);
 }
 
 .title{
@@ -55,6 +60,7 @@ p{
   padding: 14px;
   border-radius: 15px;
   background: rgba(0, 0, 0, 0.801);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* smooth easing */
 }
 
 .search-box{
@@ -68,6 +74,19 @@ p{
   width: 700px;
 }
 
+.search-form:hover {
+  transform: translateY(-2px);
+}
+
 .search-icon{
   color: aliceblue;
+}
+
+#search-button {
+  cursor: pointer;
+  user-select: none;
+}
+
+#search-button:hover {
+  transform: scale(1.1);
 }
